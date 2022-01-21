@@ -7,17 +7,34 @@ import ContactList from '../ContactList';
 
 import { Wrapper, PageTitle, ContactsTitle } from './App.styled';
 
-const initialValues = [
-  {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-  {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-  {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-  {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
-]
+// const initialValues = [
+//   {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+//   {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+//   {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+//   {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+// ]
 class App extends Component {
   state = {
-    contacts: initialValues,
+    contacts: [],
     filter: '',
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem("contacts", JSON.stringify(this.state.contacts))
+    }
+  }
+
+  componentDidMount() {
+    const savedContacts = localStorage.getItem('contacts')
+    const parsedSavedContacts = JSON.parse(savedContacts);
+    if (parsedSavedContacts) {
+      
+      this.setState({
+        contacts: parsedSavedContacts,
+      })
+    }
+  }
+  
   
   onSubmitForm = ({ name, number }) => {
     
